@@ -9,15 +9,15 @@ import { nanoid } from 'nanoid';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/operations';
-import { getContacts } from 'redux/selectors';
+import { useFetchAllQuery, useAddContactMutation } from 'redux/contactsSlice';
+import { RotatingLines } from 'react-loader-spinner';
+import { notification } from 'components/App/App';
 
 export const ContactForm = () => {
   const nameID = nanoid();
   const numberID = nanoid();
-  const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
+  const { data: contacts = [] } = useFetchAllQuery();
+  const [addContact, { isLoading }] = useAddContactMutation();
 
   const validationSchema = yup.object().shape({
     name: yup
@@ -57,8 +57,13 @@ export const ContactForm = () => {
       return;
     }
 
-    dispatch(addContact({ name, number }));
-    reset({ name: '', number: '' });
+    addContact({ name, number })
+      .unwrap()
+      .then(() => {
+        notification('Contact has been successfully added', 'success');
+        reset({ name: '', number: '' });
+      })
+      .catch(notification);
   };
 
   return (
@@ -69,7 +74,13 @@ export const ContactForm = () => {
       <FormInputLabel htmlFor={numberID}>Number</FormInputLabel>
       <FormInput type="text" {...register('number')} id={numberID} />
       {errors.number && <ErrMessage>{errors.number.message}</ErrMessage>}
-      <SubmitButton type="submit">Submit</SubmitButton>
+      <SubmitButton type="submit" disabled={isLoading}>
+        {isLoading ? (
+          <RotatingLines strokeColor="white" width="12" />
+        ) : (
+          'Submit'
+        )}
+      </SubmitButton>
     </AppForm>
   );
 };

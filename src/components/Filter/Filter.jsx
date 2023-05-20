@@ -2,11 +2,10 @@ import { nanoid } from 'nanoid';
 import { FilterWrapper, FilterInput, FilterLabel } from './Filter.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { filter } from 'redux/filterSlice';
-import { getFilter } from 'redux/selectors';
 
 export const Filter = () => {
   const filterId = nanoid();
-  const filterValue = useSelector(getFilter);
+  const filterValue = useSelector(({ filter }) => filter);
   const dispatch = useDispatch();
 
   return (

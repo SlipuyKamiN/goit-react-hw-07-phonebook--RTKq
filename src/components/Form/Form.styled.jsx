@@ -35,11 +35,14 @@ export const ErrMessage = styled.span`
 
 export const SubmitButton = styled.button`
   background-color: transparent;
+  width: 70px;
+  text-align: center;
   padding: 10px;
   border-radius: 15px;
   border: 1px solid #fed800;
   &:hover,
-  &:focus {
+  &:focus,
+  &:disabled {
     cursor: pointer;
     background-color: gray;
     color: #fff;
