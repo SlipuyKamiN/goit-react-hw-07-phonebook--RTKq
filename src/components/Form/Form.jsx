@@ -60,7 +60,10 @@ export const ContactForm = () => {
     addContact({ name, number })
       .unwrap()
       .then(() => {
-        notification('Contact has been successfully added', 'success');
+        notification(
+          `Contact "${name}" has been successfully added`,
+          'success'
+        );
         reset({ name: '', number: '' });
       })
       .catch(notification);
