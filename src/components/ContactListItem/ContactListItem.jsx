@@ -17,7 +17,7 @@ export const ContactListItem = ({ contact }) => {
           deleteContact({ id })
             .unwrap()
             .then(() => {
-              notification('Contact has been deleted');
+              notification(`Contact "${name}" has been deleted`);
             })
             .catch(() => notification());
         }}
