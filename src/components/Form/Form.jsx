@@ -53,7 +53,7 @@ export const ContactForm = () => {
     );
 
     if (isNameAlreadyInContacts) {
-      alert(`${name} is already in contacts.`);
+      notification(`"${name}" is already in contacts.`);
       return;
     }
 
